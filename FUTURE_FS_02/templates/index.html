@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row mt-4 pt-4">
+        <!-- Video Above Products -->
+        <div class="video-container mb-3">
+            <video class="w-100" autoplay loop muted>
+                <source src="{{ url_for('static', filename='images/jstar1.mp4') }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+    {% for category in categories %}
+    <div class="col-md-4 mb-4">
+        <div class="card category-card shadow-sm" style="background-color: transparent; box-shadow: 0 4px 8px rgba(255, 223, 186, 0.8);">
+            <img src="{{ url_for('static', filename='images/' + category.image) }}" class="card-img-top" alt="{{ category.name }}">
+            <div class="card-body">
+                <h5 class="card-title text-dark">{{ category.name }}</h5>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('product', category=category.name) }}" class="btn btn-shop" style="background-color: beige; color: burlywood;">Shop Now</a>
+                {% else %}
+                <a href="{{ url_for('login', category=category.name) }}" class="btn btn-shop" style="background-color: beige; color: burlywood;">Shop</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+
+    {% endfor %}
+</div>
+<!-- Shipping and Policy Section -->
+<div class="row mt-5">
+    <h2 class="text-center mb-4">Why Shop With Us?</h2>
+    <div class="col-md-4 text-center">
+        <i class="fas fa-truck fa-3x text-burlywood mb-3"></i>
+        <h5>Fast Shipping</h5>
+        <p>We offer reliable and fast delivery within Nairobi for all online purchases.</p>
+    </div>
+    <div class="col-md-4 text-center">
+        <i class="fas fa-smile fa-3x text-burlywood mb-3"></i>
+        <h5>Customer Satisfaction</h5>
+        <p>Our top priority is ensuring our customers have the best shopping experience.</p>
+    </div>
+    <div class="col-md-4 text-center">
+        <i class="fas fa-undo fa-3x text-burlywood mb-3"></i>
+        <h5>1-Week Return Policy</h5>
+        <p>Returns are accepted within 1 week if the items are in good condition (excludes innerwear).</p>
+    </div>
+</div>
+
+{% endblock %}

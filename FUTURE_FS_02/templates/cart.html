@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Your Cart</h1>
+
+<!-- Cart Table -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Size</th>
+            <th>Type</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if cart_items %}
+            {% for item in cart_items %}
+            <tr>
+                <td><img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.name }}" class="img-fluid" style="max-width: 100px;"></td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.size }}</td>
+                <td>{{ item.type }}</td>
+                <td>Ksh {{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>Ksh {{ item.price * item.quantity }}</td>
+                <td>
+                    <!-- Increase Quantity -->
+                    <form method="POST" action="{{ url_for('add_to_cart') }}" style="display:inline;">
+                        <input type="hidden" name="product_id" value="{{ item._id }}">
+                        <button type="submit" class="btn btn-success">+</button>
+                    </form>
+                    <!-- Decrease Quantity -->
+                    <a href="{{ url_for('decrease_quantity', product_id=item._id) }}" class="btn btn-warning">-</a>
+                    <!-- Remove from Cart -->
+                    <a href="{{ url_for('remove_from_cart', product_id=item._id) }}" class="btn btn-danger">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="7" class="text-center">Cart is Empty!</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<!-- Checkout Button -->
+{% if cart_items %}
+<a href="{{ url_for('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
+{% else %}
+<a href="{{ url_for('index') }}" class="btn btn-primary">Continue Shopping</a>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Checkout</h1>
+    <p class="text-muted text-center">Thank you for shopping with JSTAR Designers!</p>
+
+    <form method="POST" action="/process_checkout">
+        <div class="mb-3">
+            <label for="payment_method" class="form-label">Select Payment Method</label>
+            <select class="form-control" id="payment_method" name="payment_method" required>
+                <option value="">-- Select Payment Method --</option>
+                <option value="visa">Visa</option>
+                <option value="mpesa">M-Pesa</option>
+            </select>
+        </div>
+
+        <!-- Visa Payment Fields -->
+        <div id="visa_fields" style="display: none;">
+            <div class="mb-3">
+                <label for="card_number" class="form-label">Card Number</label>
+                <input type="text" name="card_number" class="form-control" id="card_number" maxlength="16" required>
+            </div>
+            <div class="mb-3">
+                <label for="expiry_date" class="form-label">Expiry Date (MM/YY)</label>
+                <input type="text" name="expiry_date" class="form-control" id="expiry_date" required>
+            </div>
+            <div class="mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="text" name="cvv" class="form-control" id="cvv" maxlength="3" required>
+            </div>
+        </div>
+
+        <!-- M-Pesa Payment Fields -->
+        <div id="mpesa_fields" style="display: none;">
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number (For M-Pesa)</label>
+                <input type="text" name="phone" class="form-control" id="phone" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Confirm and Pay</button>
+    </form>
+
+    <a href="{{ url_for('cart') }}" class="btn btn-secondary w-100 mt-3">Back to Cart</a>
+</div>
+
+<script>
+    document.getElementById('payment_method').addEventListener('change', function () {
+        const visaFields = document.getElementById('visa_fields');
+        const mpesaFields = document.getElementById('mpesa_fields');
+
+        if (this.value === 'visa') {
+            visaFields.style.display = 'block';
+            mpesaFields.style.display = 'none';
+        } else if (this.value === 'mpesa') {
+            mpesaFields.style.display = 'block';
+            visaFields.style.display = 'none';
+        } else {
+            visaFields.style.display = 'none';
+            mpesaFields.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
